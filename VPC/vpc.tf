@@ -28,3 +28,30 @@ resource "aws_subnet" "private_subnet" {
    Name = "terraform-vpc-private-subnet"
   }
 }
+
+resource "aws_internet_gateway" "IGW"{
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+   Name = "terraform-IGW"
+  }
+}
+
+resource "aws_eip" "NAT" {
+  vpc   = true
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+
+resource "aws_nat_gateway" "NAT_gateway" {
+  allocation_id = aws_eip.NAT.id
+
+  subnet_id = aws_subnet.public_subnet.id
+
+  tags = {
+    Name = "NAT-GW"
+  }
+}
