@@ -7,4 +7,4 @@ terraform {
   dynamodb_table = "TerraformStateLock"
   }
 }
-~  
+  
